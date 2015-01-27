@@ -23,14 +23,16 @@ def take_ss():
 
 def read(self, filename, getNpost):
     try:
-        
+        if len(filename) < 2:
+            filename = "screenshot.png"
         filepath = filename
         #allow = pathManager.verify_all(filepath)
         #if allow == False:
         #    return messages.Forbidden
+        take_ss()
         file_handler = open(filepath.replace("/", ""), 'rb')
-        
-        response = take_ss()#file_handler.read()
+
+        response = file_handler.read()
         #response = pythonCore.replaceAll(self, response, getNpost)
         return [200, response]
     except Exception as e:
