@@ -2,9 +2,24 @@ import wx
 from BaseHTTPServer import HTTPServer
 import mimetypes
 import urlparse
-
+import gtk.gdk
 from BaseHTTPServer import BaseHTTPRequestHandler
 
+def take_ss():
+    
+
+    w = gtk.gdk.get_default_root_window()
+    sz = w.get_size()
+    print "The size of the window is %d x %d" % sz
+    pb = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB,False,8,sz[0],sz[1])
+    #return pb
+    pb = pb.get_from_drawable(w,w.get_colormap(),0,0,0,0,sz[0],sz[1])
+    
+    if (pb != None):
+        pb.save("screenshot.png","png")
+        print "Screenshot saved to screenshot.png."
+    else:
+        print "Unable to get the screenshot."
 
 def read(self, filename, getNpost):
     try:
@@ -15,7 +30,7 @@ def read(self, filename, getNpost):
         #    return messages.Forbidden
         file_handler = open(filepath.replace("/", ""), 'rb')
         
-        response = file_handler.read()
+        response = take_ss()#file_handler.read()
         #response = pythonCore.replaceAll(self, response, getNpost)
         return [200, response]
     except Exception as e:
@@ -23,7 +38,7 @@ def read(self, filename, getNpost):
 
 
 def do_GET(self):
-    execfile('takess.py')
+    #execfile('takess.py')
 
     parsed_path = urlparse.urlparse(self.path)
     #sessionId = sessionManager.startSession(self)
